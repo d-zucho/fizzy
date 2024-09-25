@@ -3,6 +3,7 @@ import { PrismicRichText, SliceComponentProps } from "@prismicio/react";
 import { Bounded } from "@/components/Bounded";
 import { asText, Content } from "@prismicio/client";
 import Button from "@/components/Button";
+import { TextSplitter } from "./TextSplitter";
 
 /**
  * Props for `Hero`.
@@ -17,12 +18,17 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
     <Bounded
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
+      className="hero"
     >
       <div className="grid">
         <div className="grid h-screen place-items-center">
           <div className="grid auto-rows-min place-items-center text-center">
             <h1 className="hero-header text-7xl font-black uppercase leading-[.8] text-orange-500 md:text-[9rem] lg:text-[13rem]">
-              {asText(slice.primary.heading)}
+              <TextSplitter
+                text={asText(slice.primary.heading)}
+                wordDisplayStyle="block"
+                className="hero-header-word"
+              />
             </h1>
             <div className="hero-subheading mt-12 text-5xl font-semibold text-sky-950 lg:text-6xl">
               <PrismicRichText field={slice.primary.subheading} />
@@ -39,10 +45,20 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
           </div>
         </div>
 
-        <div className="text-sode relative z-[80] grid h-screen items-center gap-4 md:grid-cols-2">
-          <PrismicNextImage field={slice.primary.cans_image} />
-          <PrismicRichText field={slice.primary.second_heading} />
-          <PrismicRichText field={slice.primary.second_body} />
+        <div className="text-side relative z-[80] grid h-screen items-center gap-4 md:grid-cols-2">
+          <PrismicNextImage
+            className="w-full md:hidden"
+            field={slice.primary.cans_image}
+          />
+
+          <div>
+            <h2 className="text-side-heading text-balance text-6xl font-black uppercase text-sky-950 lg:text-8xl">
+              <TextSplitter text={asText(slice.primary.second_heading)} />
+            </h2>
+            <div className="text-side-body mt-4 text-balance">
+              <PrismicRichText field={slice.primary.second_body} />
+            </div>
+          </div>
         </div>
       </div>
     </Bounded>
